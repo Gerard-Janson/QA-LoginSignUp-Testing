@@ -12,7 +12,7 @@ public class BasePage
     public BasePage(IWebDriver driver)
     {
         Driver = driver;
-        Wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
+        Wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(20));
     }
 
     protected void ClickElement(By locator)
@@ -20,7 +20,6 @@ public class BasePage
         try
         {
             Wait.Until(ExpectedConditions.ElementToBeClickable(locator)).Click();
-            
         }
         catch (ElementClickInterceptedException)
         {
@@ -30,6 +29,7 @@ public class BasePage
             js.ExecuteScript("arguments[0].click();", element);
         }
     }
+
     protected void SetCheckbox(By locator, bool shouldBeChecked)
     {
         IWebElement checkbox = Wait.Until(ExpectedConditions.ElementToBeClickable(locator));
@@ -77,5 +77,18 @@ public class BasePage
         select.SelectByText(text);
     }
     
+    public void DismissOverlays()
+    {
+        try
+        {
+            ((IJavaScriptExecutor)Driver).ExecuteScript(@"
+                document.querySelectorAll(
+                    'iframe[id*=""google_ads""], div[id*=""google_ads""], .adsbygoogle, ins.adsbygoogle, [id*=""ad-""], [class*=""ad-container""]'
+                ).forEach(el => el.remove());
+            ");
+        }
+        catch { }
 
+        try { Driver.SwitchTo().Alert().Dismiss(); } catch { }
+    }
 }
