@@ -36,7 +36,6 @@ public class RegisterTests : BaseTest
         var newHeading = accountCreatedPage.GetAccountCreatedHeading();
         Assert.That(newHeading, Is.EqualTo("ACCOUNT CREATED!"));
         accountCreatedPage.ClickContinueButton();
-        homePage.DismissOverlays();
         var loginText = homePage.LoginStatusText();
         Assert.That(loginText, Does.Contain("Logged in as"));
         homePage.ClickDeleteAccountLink();

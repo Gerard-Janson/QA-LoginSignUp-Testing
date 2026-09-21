@@ -28,6 +28,8 @@ public class BasePage
             js.ExecuteScript("arguments[0].scrollIntoView({block:'center'});", element);
             js.ExecuteScript("arguments[0].click();", element);
         }
+        
+        DismissOverlays();
     }
 
     protected void SetCheckbox(By locator, bool shouldBeChecked)
